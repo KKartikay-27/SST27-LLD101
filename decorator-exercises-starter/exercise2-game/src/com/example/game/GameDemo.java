@@ -1,39 +1,41 @@
 package com.example.game;
 
 /**
- * Starter demo using only the base character.
- * TODOs guide you to implement decorators and compose them.
+ * Demo showing different character enhancements using the decorator pattern.
  */
 public class GameDemo {
     public static void main(String[] args) {
+        // Base character with no enhancements
         Character base = new BaseCharacter();
 
-        System.out.println("--- Base ---");
+        System.out.println("=== Base Character ===");
         base.move();
         base.attack();
 
-        // === YOUR TASKS ===
-        // 1) Create CharacterDecorator that implements Character and wraps another Character.
-        // 2) Create concrete decorators, for example:
-        //      - SpeedBoost (adds +N to speed, overrides getSpeed() and move() print)
-        //      - DamageBoost (adds +N to damage, overrides getDamage() and attack() print)
-        //      - GoldenAura (changes sprite, small buffs, logs aura on actions)
-        // 3) Show composition:
-        //      a) Base + SpeedBoost + DamageBoost
-        //      b) Add GoldenAura (sprite change + buffs)
-        //      c) Remove GoldenAura by recomposing (rebuild chain without it)
-        //
-        // Example (after you implement):
-        // Character buffed = new DamageBoost(new SpeedBoost(base, 3), 15);
-        // buffed.move();
-        // buffed.attack();
-        //
-        // Character shiny = new GoldenAura(buffed);
-        // shiny.move();
-        // shiny.attack();
-        //
-        // Character withoutAura = buffed; // removal by recomposition
-        // withoutAura.move();
-        // withoutAura.attack();
+        // 1. Base + SpeedBoost + DamageBoost
+        System.out.println("\n=== With Speed and Damage Boosts ===");
+        Character buffed = new DamageBoost(
+            new SpeedBoost(base, 3), // +3 speed
+            5                        // +5 damage
+        );
+        buffed.move();
+        buffed.attack();
+
+        // 2. Add GoldenAura (which also gives +2 speed and +5 damage)
+        System.out.println("\n=== Adding Golden Aura ===");
+        Character goldenBuffed = new GoldenAura(buffed);
+        goldenBuffed.move();
+        goldenBuffed.attack();
+
+        // 3. Remove GoldenAura by going back to the buffed version
+        System.out.println("\n=== Removed Golden Aura ===");
+        buffed.move();
+        buffed.attack();
+
+        // 4. Just GoldenAura on base
+        System.out.println("\n=== Just Golden Aura ===");
+        Character justGolden = new GoldenAura(new BaseCharacter());
+        justGolden.move();
+        justGolden.attack();
     }
 }
